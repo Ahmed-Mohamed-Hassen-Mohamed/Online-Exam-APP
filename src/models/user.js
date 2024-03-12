@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const validatePhoneNumber = require("validate-phone-number-node-js");
 
 const userSchema = new mongoose.Schema({
   firstname: {
