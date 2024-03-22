@@ -18,10 +18,26 @@ exports.addAnswer = async (req, res) => {
   }
 };
 
-exports.getAnswersOfExam = async (req, res) => {
+exports.getMyAnswersOfExam = async (req, res) => {
   try {
     const exam = req.params.id;
     const answers = await Answer.find({ exam, owner: req.user._id }).populate(
+      "question"
+    );
+    if (!answers) {
+      return res.status(404).send("No answers is found");
+    }
+    res.status(200).send(answers);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
+exports.getAnswersOfExam = async (req, res) => {
+  try {
+    const exam = req.query.exam;
+    const owner = req.query.owner;
+    const answers = await Answer.find({ exam, owner}).populate(
       "question"
     );
     if (!answers) {
