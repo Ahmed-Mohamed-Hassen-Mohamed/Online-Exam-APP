@@ -37,6 +37,22 @@ exports.getMyExams = async (req, res) => {
   }
 };
 
+exports.getExamResults = async (req, res) => {
+  try {
+    const exam = req.params.id;
+    const exams = await StartExam.find({ exam }).populate(
+      "owner",
+      "firstname lastname"
+    );
+    if (!exams.length) {
+      return res.status(404).send("No exam is found");
+    }
+    res.status(200).send(exams);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
 exports.getExamById = async (req, res) => {
   try {
     const _id = req.params.id;
