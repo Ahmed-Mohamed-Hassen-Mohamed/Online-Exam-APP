@@ -3,14 +3,18 @@ const Group = require("../models/group");
 
 exports.JoinGroup = async (req, res) => {
   try {
+    const group = await Group.findOne({ code: req.body.code });
+    if (!group) {
+      return res.status(404).send("Invalid Code");
+    }
     const _join = await Join.findOne({
-      group: req.body.group,
+      group: group._id,
       member: req.user._id,
     });
     if (_join) {
       return res.status(404).send("You are in this group");
     }
-    const join = new Join({ ...req.body, member: req.user._id });
+    const join = new Join({ group: group._id, member: req.user._id });
     await join.save();
     res.status(200).send(join);
   } catch (err) {
