@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const shortid = require('shortid');
 
 const groupSchema = new mongoose.Schema({
   name: {
@@ -18,17 +19,13 @@ const groupSchema = new mongoose.Schema({
     required: true,
     ref: "User",
   },
-//   code: {
-//     type: String,
-//     default: generateUniqueCode,
-//     unique: true,
-//   },
+  code: {
+    type: String,
+    unique: true,
+    default: () => shortid.generate().replace(/-/g, ''),
+    maxlength: 9
+  },
 });
-
-// function generateUniqueCode() {
-//   // Logic to generate a unique code, for example:
-//   return Math.random().toString(36).substr(2, 6); // Generates a random alphanumeric code
-// }
 
 groupSchema.methods.toJSON = function () {
   const imageObject = this.toObject();
