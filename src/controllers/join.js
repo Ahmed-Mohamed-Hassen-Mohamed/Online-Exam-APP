@@ -7,7 +7,6 @@ exports.JoinGroup = async (req, res) => {
       group: req.body.group,
       member: req.user._id,
     });
-    console.log(_join);
     if (_join) {
       return res.status(404).send("You are in this group");
     }
